@@ -1,4 +1,4 @@
-#include <windows.h>
+#include <Windows.h>
 #include <stdio.h>
 #include <time.h> 
 #include <stdbool.h>
@@ -44,7 +44,7 @@ int mouseFunctionDown(buttonStructDown *BtnDn, buttonStructUp *BtnUp, char *Butt
     GetLocalTime(&sT);
     ftime(&mT);
 
-    BtnDn->CurrentDown = (MsTime)mT.time * 1000 + mT.millitm;
+    BtnDn->CurrentDown = mT.time * 1000 + mT.millitm;
     BtnDn->ReleaseTime = BtnDn->CurrentDown - BtnUp->LastUp;
     BtnDn->CurrentTimeDifference = BtnDn->CurrentDown - BtnDn->LastClick;
     if (BtnDn->Counter <= 0) {
@@ -58,12 +58,12 @@ int mouseFunctionDown(buttonStructDown *BtnDn, buttonStructUp *BtnUp, char *Butt
         printf("Click Blocked\n");
         BtnDn->Blocked = true;
         BtnDn->LastTimeDifference = BtnDn->CurrentTimeDifference; 
-        BtnDn->LastClick = (MsTime)mT.time * 1000 + mT.millitm; 
+        BtnDn->LastClick = mT.time * 1000 + mT.millitm; 
         return 1; 
     } else {
         printf("\n");
         BtnDn->Blocked = false; 
-        BtnDn->LastClick = (MsTime)mT.time * 1000 + mT.millitm; 
+        BtnDn->LastClick = mT.time * 1000 + mT.millitm; 
         return 0;
     }
 }
@@ -71,18 +71,16 @@ int mouseFunctionDown(buttonStructDown *BtnDn, buttonStructUp *BtnUp, char *Butt
 int mouseFunctionUp(buttonStructUp *BtnUp, buttonStructDown *BtnDn, char *ButtonName) {
     GetLocalTime(&sT);
     ftime(&mT);
-    BtnUp->CurrentUp = (MsTime)mT.time * 1000 + mT.millitm;
+    BtnUp->CurrentUp = mT.time * 1000 + mT.millitm;
     BtnUp->HoldTime = BtnUp->CurrentUp - BtnDn->LastClick;
     printf("%s        [%02d:%02d:%02d] [%d]\n", ButtonName, sT.wHour, sT.wMinute, sT.wSecond, BtnUp->HoldTime);
-    BtnUp->LastUp = (MsTime)mT.time * 1000 + mT.millitm; 
+    BtnUp->LastUp = mT.time * 1000 + mT.millitm; 
     BtnDn->Pass = true;  
     return 0;
 }
 
 LRESULT CALLBACK mouseProcess(int nCode, WPARAM wParam, LPARAM lParam) {
     if (nCode >=0 ) {
-        MSLLHOOKSTRUCT *pMouse = (MSLLHOOKSTRUCT *)lParam; 
-
 
         switch (wParam)
         {
